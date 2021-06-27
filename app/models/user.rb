@@ -1,7 +1,8 @@
 class User < ApplicationRecord
   include SecureRandom
   after_initialize :assign_api_key, :downcase_email
-
+  has_many :user_searches
+  has_many :searches, through: :user_searches
   has_secure_password
   validates :email, presence: true
   validates :email, uniqueness: true

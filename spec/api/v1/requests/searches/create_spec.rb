@@ -5,14 +5,15 @@ RSpec.describe "Search request" do
     @user = User.create!(email: 'kyle@example.com', password: 'password')
   end
   describe "happy path" do
-    xit "returns all the appropriate data", :vcr do
+    it "returns all the appropriate data", :vcr do
       @user_2 = User.create!(email: 'kyle_s@example.com', password: 'password')
 
       headers = { "CONTENT_TYPE" => "application/json", 'ACCEPT' => 'application/json' }
-      params = { 'IATA_code': 'JFK', 'radius': '6', 'api_key': @user_2.api_key }
+      params = { 'IATA_code': 'JFK', 'radius': '6', 'api_key': @user_2.api_key, 'room_quantity': 1,  }
       post '/api/v1/search', :params => params.to_json, :headers => headers
 
       response = parse(@response)
+      require "pry"; binding.pry
       expect(@response).to be_successful
       expect(response[:data].count).to eq(3)
       expect(response[:data].keys).to eq([:id, :type, :attributes])
