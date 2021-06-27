@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_27_162334) do
+ActiveRecord::Schema.define(version: 2021_06_27_200122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "searches", force: :cascade do |t|
+    t.string "IATA_code"
+    t.integer "radius"
+    t.integer "room_quantity"
+    t.string "check_in_date"
+    t.string "check_out_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_searches", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "search_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["search_id"], name: "index_user_searches_on_search_id"
+    t.index ["user_id"], name: "index_user_searches_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
@@ -23,4 +42,6 @@ ActiveRecord::Schema.define(version: 2021_06_27_162334) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "user_searches", "searches"
+  add_foreign_key "user_searches", "users"
 end

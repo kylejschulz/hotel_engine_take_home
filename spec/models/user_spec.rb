@@ -8,6 +8,11 @@ RSpec.describe User, model: :type do
 
   end
 
+  describe "associations" do
+    it { should have_many(:user_searches) }
+    it { should have_many(:searches).through(:user_searches) }
+  end
+
   describe "instance methods" do
     it "#assign_api_key" do
       user = User.new(email: 'KYLE@example.com', password: 'password')
